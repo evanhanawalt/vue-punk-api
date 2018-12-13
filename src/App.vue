@@ -1,21 +1,13 @@
 <template>
   <div id="app">
-    <div class="">
+    <div class>
       <h1>Punk API</h1>
     </div>
 
-    <button
-      class="button"
-      v-bind:disabled="disableButton"
-      @click="getBeers"
-    >Load Some Beers!</button>
-    <div class="beers ">
-      <BeerCard
-        class="col"
-        v-for="beer in beers"
-        v-bind:key="beer.id"
-        v-bind="beer"
-      ></BeerCard>
+    <button class="button" :class="{disabled:buttonIsDisabled}" @click="getBeers">Load Some Beers!</button>
+
+    <div class="beers">
+      <BeerCard class="col" v-for="beer in beers" v-bind:key="beer.id" v-bind="beer"></BeerCard>
     </div>
   </div>
 </template>
@@ -32,26 +24,24 @@ export default {
   },
   data: function() {
     return {
-      disableButton: false,
+      buttonIsDisabled: false,
       beers: []
     };
   },
   methods: {
     getBeers: function() {
-      /* eslint-disable */
       const self = this;
-      this.disableButton = true;
-
+      this.buttonIsDisabled = true;
       axios
         .get(API_ENDPOINT)
         .then(function(response) {
           // handle success
           self.beers = response.data;
-          console.log(response.data);
           this.beers.push({ id: 1 });
         })
         .catch(function(error) {
-          // handle error
+          // eslint-disable-next-line
+          console.log(error);
         });
     }
   }
@@ -59,7 +49,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+$color-primary: #e75a3a;
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -78,9 +68,25 @@ export default {
   justify-content: center;
 }
 
-.col{
+.col {
   flex-basis: 300px;
   flex-grow: 0;
   flex-shrink: 1;
+}
+
+.button {
+  background-color: $color-primary;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 </style>
