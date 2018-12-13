@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <div class="content">
+    <div class="">
       <h1>Punk API</h1>
     </div>
 
     <button
-      class="button is-primary"
+      class="button"
       v-bind:disabled="disableButton"
       @click="getBeers"
     >Load Some Beers!</button>
-    <div class="beers columns is-multiline">
+    <div class="beers ">
       <BeerCard
-        class="column is-one-quarter"
+        class="col"
         v-for="beer in beers"
         v-bind:key="beer.id"
         v-bind="beer"
@@ -25,7 +25,6 @@ import axios from "axios";
 import BeerCard from "./components/BeerCard.vue";
 const API_ENDPOINT = "https://api.punkapi.com/v2/beers";
 
-
 export default {
   name: "app",
   components: {
@@ -34,7 +33,7 @@ export default {
   data: function() {
     return {
       disableButton: false,
-      beers: [{}]
+      beers: []
     };
   },
   methods: {
@@ -49,7 +48,7 @@ export default {
           // handle success
           self.beers = response.data;
           console.log(response.data);
-          this.beers.push({id:1})
+          this.beers.push({ id: 1 });
         })
         .catch(function(error) {
           // handle error
@@ -59,21 +58,14 @@ export default {
 };
 </script>
 
-<style >
+<style lang="scss">
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-</style>
-
-<style lang="scss">
-$primary: #e75a3a;
-@import "../node_modules/bulma/bulma.sass";
-
-#app {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -81,6 +73,14 @@ $primary: #e75a3a;
 }
 
 .beers {
-  margin: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.col{
+  flex-basis: 300px;
+  flex-grow: 0;
+  flex-shrink: 1;
 }
 </style>
