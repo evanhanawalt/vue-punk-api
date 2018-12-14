@@ -1,11 +1,15 @@
 <template>
   <div class="beer-card">
-    <div class="image-container">
+    <div class="image-container" v-on:click="$emit('show-modal', image_url)">
       <img :src="image_url" :alt="name">
     </div>
     <div class="description-container">
       <p>{{name}}</p>
       <p>{{abv}} %</p>
+    </div>    
+    <div class="description-container">
+      <p>First Brewed</p>
+      <p>{{first_brewed}}</p>
     </div>
   </div>
 </template>
@@ -13,7 +17,7 @@
 <script>
 export default {
   name: "BeerCard",
-  props: ["image_url", "abv", "id", "name"]
+  props: ["image_url", "abv", "id", "name", "first_brewed"]
 };
 </script>
 
@@ -33,5 +37,6 @@ img {
 .description-container {
   display: flex;
   justify-content: space-between;
+  max-height: 30px;
 }
 </style>
