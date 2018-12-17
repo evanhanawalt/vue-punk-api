@@ -37,6 +37,6 @@ img {
 .description-container {
   display: flex;
   justify-content: space-between;
-  max-height: 30px;
+  
 }
 </style>

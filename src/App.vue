@@ -8,25 +8,30 @@
       :class="{disabled:buttonIsDisabled}"
       @click="getBeers"
     >Load Some Beers!</button>
-    
-    <select v-else v-model="sortBy">
-      <option value disabled selected>Sort by...</option>
-      <option value="first_brewed">First Brew Date (most recent)</option>
-      <option value="abv">ABV</option>
-    </select>
+    <div class="options-container" v-else>
+      <select v-model="sortBy">
+        <option value disabled selected>Sort by...</option>
+        <option value="first_brewed">First Brew Date (most recent)</option>
+        <option value="abv">ABV</option>
+      </select>
+ 
 
+      <select v-model="maxColumns">
+        <option value disabled selected>Max Column #...</option>
+        <option value="4">4 Col</option>
+        <option value="2">2 Col</option>
+      </select>
+    </div>
     <square :hidden="!loading"></square>
 
-    <transition-group class="beers" name="fade">
+    <transition-group class="beers" :class="{'beers--2-col':is2Column}" name="fade">
       <BeerCard
-        class="col"
         v-for="beer in beers"
         v-bind:key="beer.id"
         v-bind="beer"
         v-on:show-modal="showModal($event)"
       ></BeerCard>
     </transition-group>
-
   </div>
 </template>
 
@@ -48,8 +53,18 @@ export default {
       buttonIsDisabled: false,
       loading: false,
       sortBy: "",
+      maxColumns:4,
       beers: []
     };
+  },
+  computed: {
+    is2Column:function(){
+      if (this.maxColumns == 2){
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   methods: {
     getBeers: function() {
@@ -76,7 +91,7 @@ export default {
       this.$modal.show(
         BeerModal,
         { image_url: image_url },
-        { height: "80%", width:"80%" }
+        { height: "80%", width: "80%" }
       );
     }
   },
@@ -104,6 +119,7 @@ export default {
 
 <style lang="scss">
 $color-primary: #e75a3a;
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -117,15 +133,12 @@ $color-primary: #e75a3a;
 }
 
 .beers {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
-.col {
-  flex-basis: 300px;
-  flex-grow: 0;
-  flex-shrink: 1;
+.beers--2-col{
+  grid-template-columns: 1fr 1fr;
 }
 
 .button {
@@ -139,6 +152,13 @@ $color-primary: #e75a3a;
   cursor: pointer;
 }
 
+
+.options-container{
+  display:flex;
+  justify-content: space-between;
+}
+
+
 .disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -151,5 +171,20 @@ $color-primary: #e75a3a;
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+
+@media only screen and (max-width: 900px) {
+  .beers {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+
+
+@media only screen and (max-width: 500px) {
+  .beers {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
