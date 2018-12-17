@@ -8,19 +8,26 @@
       :class="{disabled:buttonIsDisabled}"
       @click="getBeers"
     >Load Some Beers!</button>
-    <div class="options-container" v-else>
-      <select v-model="sortBy">
-        <option value disabled selected>Sort by...</option>
-        <option value="first_brewed">First Brew Date (most recent)</option>
-        <option value="abv">ABV</option>
-      </select>
- 
 
-      <select v-model="maxColumns">
-        <option value disabled selected>Max Column #...</option>
-        <option value="4">4 Col</option>
-        <option value="2">2 Col</option>
-      </select>
+    <div class="options-container" v-else>
+      <div>
+        <label>Sort By: </label>
+        
+        <select v-model="sortBy">
+          <option value disabled selected>Sort by...</option>
+          <option value="id">id</option>
+          <option value="first_brewed">First Brew Date (most recent)</option>
+          <option value="abv">ABV</option>
+        </select>
+      </div>
+      <div>
+        <label>Max Column #: </label>
+        <select v-model="maxColumns">
+          <option value disabled selected>Max Column #...</option>
+          <option value="4">4 Col</option>
+          <option value="2">2 Col</option>
+        </select>
+      </div>
     </div>
     <square :hidden="!loading"></square>
 
@@ -52,14 +59,14 @@ export default {
     return {
       buttonIsDisabled: false,
       loading: false,
-      sortBy: "",
-      maxColumns:4,
+      sortBy: "id",
+      maxColumns: 4,
       beers: []
     };
   },
   computed: {
-    is2Column:function(){
-      if (this.maxColumns == 2){
+    is2Column: function() {
+      if (this.maxColumns == 2) {
         return true;
       } else {
         return false;
@@ -102,6 +109,10 @@ export default {
         this.beers.sort(function(a, b) {
           return b.abv - a.abv;
         });
+      } else if (this.sortBy == "id") {
+        this.beers.sort(function(a, b) {
+          return a.id - b.id;
+        });
       } else {
         // sort by date(parsed from string)
         this.beers.sort(function(a, b) {
@@ -137,7 +148,7 @@ $color-primary: #e75a3a;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
-.beers--2-col{
+.beers--2-col {
   grid-template-columns: 1fr 1fr;
 }
 
@@ -152,12 +163,11 @@ $color-primary: #e75a3a;
   cursor: pointer;
 }
 
-
-.options-container{
-  display:flex;
-  justify-content: space-between;
+.options-container {
+  display: flex;
+  align-self: stretch;
+  justify-content: space-around;
 }
-
 
 .disabled {
   opacity: 0.6;
@@ -173,14 +183,11 @@ $color-primary: #e75a3a;
   opacity: 0;
 }
 
-
 @media only screen and (max-width: 900px) {
   .beers {
     grid-template-columns: 1fr 1fr;
   }
 }
-
-
 
 @media only screen and (max-width: 500px) {
   .beers {
