@@ -31,7 +31,7 @@ export default {
 
 }
 img {  
-  max-height: 200px;
+  max-height: 250px;
   margin: 1em;
 }
 .description-container {
