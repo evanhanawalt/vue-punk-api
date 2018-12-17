@@ -11,6 +11,7 @@ Created based on challenge mockup from [Dynamit](https://github.com/Dynamit/fron
 4. After fetching beer info, clicking thumbnails displays that beer's image as a larger modal.
 
 ~Instead of implementing a toggleable column system (switch between 4 and 2) I opted to make all elements the same size and wrap based on screen size.~
+
 5. Actually after learning more about CSS Grid I implemented a dropdown selector that could toggle to 2 columns, but still made the columns responsively collapse as they were before through grid.
 
 
